@@ -1,0 +1,16 @@
+﻿name: Deployment-Infra-DEV-$(Rev:rr)
+trigger: none
+
+variables:
+   - group: britops-development
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: DeployInfrastructure
+  jobs:
+   - job: terraform_apply_develop
+     steps:
+       - template: '../templates/terraform.yaml'
+

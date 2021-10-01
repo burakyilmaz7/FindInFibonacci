@@ -1,0 +1,41 @@
+
+steps:
+    - task: TerraformInstaller@0
+      displayName: 'install'
+      inputs:
+        terraformVersion: '$(terraformVersion)'
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in terraform files **/*.tf'
+      inputs:
+        targetFiles: '**/*.tf'
+        escapeType: none
+        tokenPrefix: '__'
+        tokenSuffix: '__'
+    - task: TerraformTaskV2@2
+      displayName: 'init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: '$(backendServiceArm)'
+        backendAzureRmResourceGroupName: '$(backendAzureRmResourceGroupName)'
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
+        backendAzureRmKey: '$(backendAzureRmKey)'
+        workingDirectory: '$(workingDir)/terraform'
+    - task: TerraformTaskV2@2
+      displayName: 'plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        commandOptions: '-input=false -var-file="$(workingDir)/vars/$(Environment).tfvars"'
+        environmentServiceNameAzureRM: '$(backendServiceArm)'
+        workingDirectory: '$(workingDir)/terraform'
+    - task: TerraformTaskV2@2
+      displayName: 'apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        commandOptions: '-input=false -auto-approve -var-file="$(workingDir)/vars/$(Environment).tfvars"'
+        environmentServiceNameAzureRM: '$(backendServiceArm)'
+        workingDirectory: '$(workingDir)/terraform'
+

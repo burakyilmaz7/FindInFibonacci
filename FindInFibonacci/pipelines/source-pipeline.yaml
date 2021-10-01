@@ -1,0 +1,23 @@
+name: Deployment-App-DEV-$(Rev:rr)
+trigger: none
+
+variables:
+   - group: britops-development
+
+pool: 
+  vmImage: 'windows-latest'
+
+
+stages:
+- stage: BuildAndDeployApp
+  jobs:
+   - job: build_deploy
+     steps:
+       - template: '../templates/build.yaml'
+       - template: '../templates/deploy.yaml'
+
+       
+
+
+
+ 

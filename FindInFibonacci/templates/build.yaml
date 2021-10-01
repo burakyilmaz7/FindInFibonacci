@@ -1,0 +1,26 @@
+﻿steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: 'restore'
+    projects: $(SolutionPath)
+- task: DotNetCoreCLI@2
+  displayName: 'Build web project'
+  inputs:
+    command: 'build'
+    projects: $(SolutionPath)
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish and zip'
+  inputs:
+    command: publish
+    publishWebProjects: False
+    projects: $(SolutionPath)
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish artifacts'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'  

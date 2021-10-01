@@ -1,0 +1,9 @@
+﻿steps:
+- task: AzureFunctionApp@1
+  displayName: 'Azure Function App Deploy'
+  inputs:
+    azureSubscription: '$(backendServiceArm)'
+    appType: functionAppLinux
+    appName: $(function_app_name)
+    runtimeStack: 'DOTNET|3.1'
+    package: $(Build.ArtifactStagingDirectory)/**/*.zip
