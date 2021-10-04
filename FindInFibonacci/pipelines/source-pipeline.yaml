@@ -1,11 +1,12 @@
 name: Deployment-App-DEV-$(Rev:rr)
 resources:
   pipelines:
-  - pipeline: Create-Infrastructure
-    source: 'Create Infrastructure'
+  - pipeline: create_infrastructure
+    source: CreateInfrastructure
     trigger: 
       branches:
-      - main
+        include:
+          - main
 
 variables:
    - group: britops-development
