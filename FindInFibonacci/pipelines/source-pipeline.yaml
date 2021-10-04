@@ -3,10 +3,7 @@ resources:
   pipelines:
   - pipeline: create_infrastructure
     source: CreateInfrastructure
-    trigger: 
-      branches:
-        include:
-          - main
+    trigger: true
 
 variables:
    - group: britops-development
