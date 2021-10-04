@@ -1,5 +1,8 @@
-﻿name: Deployment-Infra-DEV-$(Rev:rr)
-trigger: none
+name: Deployment-Infra-DEV-$(Rev:rr)
+trigger: 
+  branches:
+    include:
+      - main
 
 variables:
    - group: britops-development
